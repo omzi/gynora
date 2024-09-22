@@ -448,8 +448,7 @@ export const mentalHealthGoals = [
   'Communication Issues',
   'Perfectionism',
   'Coping with Rejection',
-  'Emotional Detachment',
-  'Other'
+  'Emotional Detachment'
 ];
 
 export const GENDERS = [

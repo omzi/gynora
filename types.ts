@@ -19,6 +19,12 @@ declare module 'next-auth/jwt' {
   interface JWT extends ExtendedUser {}
 }
 
+export type OptionalExcept<T, K extends keyof T> = {
+  [P in keyof T as P extends K ? P : never]: T[P];
+} & {
+  [P in keyof T as P extends K ? never : P]?: T[P];
+};
+
 export interface ChatHistory {
   id: string;
   name: string;

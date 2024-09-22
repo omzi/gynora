@@ -106,7 +106,7 @@ const Navigation: FC<NavigationProps> = ({ children, hideOverflow }) => {
 				</div>
 			</aside>
 
-			<main className={cn('flex flex-col ml-0 h-svh transition-all duration-300', isCollapsed ? 'lg:ml-24' : 'lg:ml-64')}>
+			<main className={cn('flex flex-col ml-0 w-full h-svh transition-all duration-300 overflow-hidden absolute', isCollapsed ? 'lg:ml-24 lg:w-[calc(100%-6rem)]' : 'lg:ml-64 lg:w-[calc(100%-16rem)]')}>
 				<nav className='flex items-center justify-between w-full shadow-sm dark:bg-black px-3 py-4'>
 					<MenuIcon
 						onClick={openMenu}
