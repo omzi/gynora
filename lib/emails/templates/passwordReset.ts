@@ -1,6 +1,5 @@
-import fs from 'fs';
-import path from 'path';
 import { compileTemplate } from '#/lib/utils';
+import template from '#/lib/emails/templates/passwordReset.template';
 
 interface EmailVariables {
   email: string;
@@ -10,8 +9,6 @@ interface EmailVariables {
 
 const passwordResetEmailTemplate = (variables: EmailVariables): string => {
 	try {
-		const templatePath = path.resolve(process.cwd(), 'lib/emails/templates/passwordReset.handlebars');
-		const template = fs.readFileSync(templatePath, 'utf8');
 		const compiledHTML = compileTemplate(template, variables);
 
 		return compiledHTML;

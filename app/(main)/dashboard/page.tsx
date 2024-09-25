@@ -15,8 +15,6 @@ const Page = async () => {
 	
 	const randomTip = mentalHealthTips[Math.floor(Math.random() * mentalHealthTips.length)];
 	const data = await getDashboardStats(session.user.id);
-	console.log('Dashboard Data :>>', data);
-	console.log('Chart Data :>>', data.charts);
 	
 	return <Dashboard randomTip={randomTip} data={data} />;
 };
