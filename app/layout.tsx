@@ -3,6 +3,7 @@
 import { ReactNode } from 'react';
 import Providers from '#/app/providers';
 import { ToastContainer } from 'react-toastify';
+import { Analytics } from '@vercel/analytics/react';
 import { Next13ProgressBar } from 'next13-progressbar';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
@@ -48,6 +49,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
               showOnShallow
             />
           </Providers>
+          <Analytics />
         </body>
       </html>
     </QueryClientProvider>

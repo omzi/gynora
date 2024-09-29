@@ -9,6 +9,7 @@ import { AffirmationSchema } from '#/lib/validations';
 import { NextRequest, NextResponse } from 'next/server';
 import { edgestoreBackendClient } from '#/lib/edgestoreServer';
 
+export const maxDuration = 60;
 const openai = new OpenAI();
 
 export const POST = async (req: NextRequest) => {
@@ -84,7 +85,27 @@ Each challenge I encounter is a crucible for growth, transforming obstacles into
 Generate an affirmation that feels personal, powerful, and tailored to the user's specific needs, goals, and cultural background, while adhering to the requested length and structure parameters. Ensure the affirmation promotes inclusivity and respect for diverse perspectives.
 Separate each sentence by a newline character.`;
 
-		const model = google('models/gemini-1.5-flash-latest');
+		const model = google('models/gemini-1.5-flash-latest', {
+			safetySettings: [
+				{
+					category: 'HARM_CATEGORY_HARASSMENT',
+					threshold: 'BLOCK_NONE'
+				},
+				{
+					category: 'HARM_CATEGORY_HATE_SPEECH',
+					threshold: 'BLOCK_NONE'
+				},
+				{
+					category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
+					threshold: 'BLOCK_NONE'
+				},
+				{
+					category: 'HARM_CATEGORY_DANGEROUS_CONTENT',
+					threshold: 'BLOCK_NONE'
+				}
+			]
+		});
+
 		const { text } = await generateText({
 			model,
 			prompt
