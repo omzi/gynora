@@ -7,6 +7,10 @@ export const edgeStoreRouter = edgeStore.router({
 		.beforeDelete(() => {
 			return true;
 		}),
+	profilePictures: edgeStore.imageBucket()
+		.beforeDelete(() => {
+			return true;
+		}),
 	affirmationFiles: edgeStore.fileBucket()
 		.beforeDelete(() => {
 			return true;

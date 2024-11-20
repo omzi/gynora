@@ -68,6 +68,12 @@ export const UserDataSchema = z.object({
   approachType: z.number().min(0, 'Please select a value greater than or equal to 0').max(5, 'Please select a value less than or equal to 5')
 });
 
+export const UserDataUpdateSchema = UserDataSchema.partial().merge(
+  z.object({
+    userId: z.string().min(1)
+  })
+);
+
 export const AffirmationSchema = z.object({
   category: z.string().min(1, 'Please select a category'),
   voice: z.string().min(1, 'Please select a voice'),
