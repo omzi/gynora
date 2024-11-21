@@ -1,6 +1,5 @@
-import fs from 'fs';
-import path from 'path';
 import { compileTemplate } from '#/lib/utils';
+import template from '#/lib/emails/templates/accountVerification.template';
 
 interface EmailVariables {
   email: string;
@@ -11,8 +10,6 @@ interface EmailVariables {
 
 const accountVerificationEmailTemplate = (variables: EmailVariables): string => {
 	try {
-		const templatePath = path.resolve(process.cwd(), 'lib/emails/templates/accountVerification.handlebars');
-		const template = fs.readFileSync(templatePath, 'utf8');
 		const compiledHTML = compileTemplate(template, variables);
 
 		return compiledHTML;
