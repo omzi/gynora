@@ -46,7 +46,7 @@ const getWeeklyStats = async (userId: string, type: 'chat' | 'affirmation') => {
       weeklyCounts[i] = await prisma.chat.count({
         where: {
           userId,
-          startedAt: { gte: startOfDay, lte: endOfDay }
+          createdAt: { gte: startOfDay, lte: endOfDay }
         }
       });
     } else if (type === 'affirmation') {
@@ -104,13 +104,13 @@ export const getDashboardStats = async (userId: string) => {
     prisma.chat.count({
       where: {
         userId: userId,
-        startedAt: { gte: firstDayOfCurrentMonth, lte: lastDayOfCurrentMonth }
+        createdAt: { gte: firstDayOfCurrentMonth, lte: lastDayOfCurrentMonth }
       },
     }),
     prisma.chat.count({
       where: {
         userId: userId,
-        startedAt: { gte: firstDayOfLastMonth, lte: lastDayOfLastMonth }
+        createdAt: { gte: firstDayOfLastMonth, lte: lastDayOfLastMonth }
       },
     }),
     prisma.feedback.count({
@@ -168,7 +168,7 @@ export const getDashboardStats = async (userId: string) => {
     const chats = await prisma.chat.findMany({
       where: {
         userId: userId,
-        startedAt: { gte: startDate, lte: endDate },
+        createdAt: { gte: startDate, lte: endDate },
       },
       include: {
         messages: {
