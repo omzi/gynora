@@ -12,6 +12,7 @@ import { cn, prompts, shuffleArray } from '#/lib/utils';
 import ExpandableTextArea from '#/components/ExpandableTextArea';
 import { ArrowUpIcon, HelpCircleIcon, MicIcon } from 'lucide-react';
 import { MouseEvent, useEffect, useMemo, useRef, useState } from 'react';
+import AudioRecordingModal from '#/components/modals/AudioRecordingModal';
 
 const Chat = () => {
 	const router = useRouter();
@@ -22,6 +23,7 @@ const Chat = () => {
 	const submitButtonRef = useRef<HTMLButtonElement>(null);
 	const [isCreatingChat, setIsCreatingChat] = useState(false);
 	const [messageBoxHeight, setMessageBoxHeight] = useState(0);
+	const [isAudioModalOpen, setIsAudioModalOpen] = useState(false);
 	const [selectedPrompts, setSelectedPrompts] = useState<typeof prompts>();
 
 	const numberOfPrompts = isMobile ? 2 : 4;
@@ -99,6 +101,13 @@ const Chat = () => {
 		}
 	};
 
+	const handleAudioRecordingComplete = (transcription: string) => {
+		setInput(transcription);
+		if (submitButtonRef.current) {
+			submitButtonRef.current.click();
+		}
+	};
+
 	return (
 		<div className='flex flex-col h-full relative -m-4 md:-mx-8'>
 			<div
@@ -147,15 +156,16 @@ const Chat = () => {
 						{isRecording ? (
 							<Loader type='spinner' size={28} className='leading-[0]' />
 						) : (
-							<label
-								htmlFor='chatImage'
+							<button
+								disabled={isCreatingChat}
+								onClick={() => setIsAudioModalOpen(true)}
 								className={cn(
 									'text-white dark:text-black cursor-pointer p-0.5 border border-black rounded-lg dark:border-white bg-black dark:bg-white',
 									isCreatingChat && 'opacity-50 pointer-events-none grayscale'
 								)}
 							>
 								<MicIcon className='w-5 h-5' />
-							</label>
+							</button>
 						)}
 					</div>
 
@@ -183,6 +193,12 @@ const Chat = () => {
 					</Button>
 				</div>
 			</div>
+
+			<AudioRecordingModal
+				isOpen={isAudioModalOpen}
+				onClose={() => setIsAudioModalOpen(false)}
+				onTranscriptionComplete={handleAudioRecordingComplete}
+			/>
 		</div>
 	);
 }

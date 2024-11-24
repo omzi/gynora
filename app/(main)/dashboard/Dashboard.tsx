@@ -92,7 +92,7 @@ const Dashboard = ({ randomTip, data }: DashboardProps) => {
 							<BadgeDelta deltaType={formatPercentageDelta(`${data.stats.chatSessionChange}`).deltaType} />
 							<div className='flex justify-start space-x-1 truncate'>
 								<Text color={chartColors[formatPercentageDelta(`${data.stats.chatSessionChange}`).deltaType] as any}>
-									{formatPercentageDelta(`${data.stats.chatSessionChange}`).absoluteValue}%
+									{formatPercentageDelta(`${data.stats.chatSessionChange}`).absoluteValue.toFixed(2)}%
 								</Text>
 								<Text>from previous month</Text>
 							</div>
@@ -109,7 +109,7 @@ const Dashboard = ({ randomTip, data }: DashboardProps) => {
 							<BadgeDelta deltaType={formatPercentageDelta(`${data.stats.averageSessionDurationChange}`).deltaType} />
 							<div className='flex justify-start space-x-1 truncate'>
 								<Text color={chartColors[formatPercentageDelta(`${data.stats.averageSessionDurationChange}`).deltaType] as any}>
-									{formatPercentageDelta(`${data.stats.averageSessionDurationChange}`).absoluteValue}%
+									{formatPercentageDelta(`${data.stats.averageSessionDurationChange}`).absoluteValue.toFixed(2)}%
 								</Text>
 								<Text>from previous month</Text>
 							</div>
@@ -128,7 +128,7 @@ const Dashboard = ({ randomTip, data }: DashboardProps) => {
 							<BadgeDelta deltaType={formatPercentageDelta(`${data.stats.satisfactionChange}`).deltaType} />
 							<div className='flex justify-start space-x-1 truncate'>
 								<Text color={chartColors[formatPercentageDelta(`${data.stats.satisfactionChange}`).deltaType] as any}>
-									{formatPercentageDelta(`${data.stats.satisfactionChange}`).absoluteValue}%
+									{formatPercentageDelta(`${data.stats.satisfactionChange}`).absoluteValue.toFixed(2)}%
 								</Text>
 								<Text>from previous month</Text>
 							</div>
@@ -145,7 +145,7 @@ const Dashboard = ({ randomTip, data }: DashboardProps) => {
 							<BadgeDelta deltaType={formatPercentageDelta(`${data.stats.affirmationChange}`).deltaType} />
 							<div className='flex justify-start space-x-1 truncate'>
 								<Text color={chartColors[formatPercentageDelta(`${data.stats.affirmationChange}`).deltaType] as any}>
-									{formatPercentageDelta(`${data.stats.affirmationChange}`).absoluteValue}%
+									{formatPercentageDelta(`${data.stats.affirmationChange}`).absoluteValue.toFixed(2)}%
 								</Text>
 								<Text>from previous month</Text>
 							</div>

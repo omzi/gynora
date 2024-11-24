@@ -5,12 +5,16 @@ import { generateText } from 'ai';
 import { google } from '@ai-sdk/google';
 import { getToken } from 'next-auth/jwt';
 import { blobToFile } from '#/lib/utils';
+import { AssemblyAI } from 'assemblyai';
 import { AffirmationSchema } from '#/lib/validations';
 import { NextRequest, NextResponse } from 'next/server';
 import { edgestoreBackendClient } from '#/lib/edgestoreServer';
 
 export const maxDuration = 60;
 const openai = new OpenAI();
+const assemblyAIClient = new AssemblyAI({
+  apiKey: process.env.ASSEMBLY_AI_API_KEY!
+});
 
 export const POST = async (req: NextRequest) => {
 	const token = await getToken({ req });
@@ -130,15 +134,8 @@ Separate each sentence by a newline character.`;
 
 		const audioFile = await blobToFile(audioBlob, 'audio.mp3');
 
-		// Generate subtitle
-		const subtitleResult = await openai.audio.transcriptions.create({
-			file: audioFile,
-			model: 'whisper-1',
-			language: 'en',
-			response_format: 'vtt'
-		});
-
-		console.log('subtitleResult :>>', subtitleResult);
+		const transcript = await assemblyAIClient.transcripts.transcribe({ audio: audioFile, language_code: 'en' });
+		const subtitleResult = await assemblyAIClient.transcripts.subtitles(transcript.id, 'vtt');
 
 		const affirmation = await prisma.affirmation.create({
 			data: {
@@ -155,6 +152,6 @@ Separate each sentence by a newline character.`;
 		return NextResponse.json({ message: 'Affirmation created successfully!', data: affirmation }, { status: 201 });
 	} catch (error) {
 		console.error('Server Error [GET/ChatHistory]:>>', error);
-		return NextResponse.json({ message: 'Error fetching affirmation history ;(' }, { status: 500 });
+		return NextResponse.json({ message: 'Failed to create affirmation ;(' }, { status: 500 });
 	}
 };

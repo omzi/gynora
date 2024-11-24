@@ -13,6 +13,7 @@ import { useScrollAnchor } from '#/hooks/useScrollAnchor';
 import { useUser } from '#/components/contexts/UserContext';
 import { MouseEvent, useEffect, useRef, useState } from 'react';
 import ExpandableTextArea from '#/components/ExpandableTextArea';
+import AudioRecordingModal from '#/components/modals/AudioRecordingModal';
 import { ArrowDownIcon, ArrowUpIcon, MicIcon, RotateCcwIcon, ShieldAlertIcon, SquareIcon } from 'lucide-react';
 
 interface ChatIdProps {
@@ -28,8 +29,9 @@ const ChatId = ({ initialMessages, chatId }: ChatIdProps) => {
 	const [isRecording, setIsRecording] = useState(false);
 	const submitButtonRef = useRef<HTMLButtonElement>(null);
 	const [messageBoxHeight, setMessageBoxHeight] = useState(0);
+	const [isAudioModalOpen, setIsAudioModalOpen] = useState(false);
 	const { messagesRef, messageEndRef, isAtBottom, scrollToBottom } = useScrollAnchor();
-	const { messages, error, handleSubmit, isLoading, input, handleInputChange, stop, reload } = useChat({
+	const { messages, error, handleSubmit, isLoading, input, setInput, handleInputChange, stop, reload } = useChat({
 		api: '/api/chat',
 		initialMessages,
 		body: { chatId },
@@ -89,6 +91,13 @@ const ChatId = ({ initialMessages, chatId }: ChatIdProps) => {
 
 	const handleRegenerate = () => {
 		reload({ options: { body: { chatId, isReload: true } } });
+	};
+
+	const handleAudioRecordingComplete = (transcription: string) => {
+		setInput(transcription);
+		if (submitButtonRef.current) {
+			submitButtonRef.current.click();
+		}
 	};
 
 	return (
@@ -204,6 +213,12 @@ const ChatId = ({ initialMessages, chatId }: ChatIdProps) => {
 					<p className='text-xs text-muted-foreground'>Gynora can make mistakes. Check important info.</p>
 				</div>
 			</div>
+
+			<AudioRecordingModal
+				isOpen={isAudioModalOpen}
+				onClose={() => setIsAudioModalOpen(false)}
+				onTranscriptionComplete={handleAudioRecordingComplete}
+			/>
 		</div>
 	);
 };

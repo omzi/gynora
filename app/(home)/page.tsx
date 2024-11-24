@@ -5,7 +5,7 @@ import { getServerSession } from 'next-auth';
 
 export const metadata: Metadata = {
 	title: 'Home ~ Gynora',
-	description: '✨ Your personal health pal, powered by AI'
+	description: '⚡ Your AI-powered mental health companion, powered by AI'
 }
 
 const Page = async () => {

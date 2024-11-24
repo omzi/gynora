@@ -16,7 +16,7 @@ export const GET = async (req: NextRequest) => {
 				name: true,
 				updatedAt: true,
 				messages: {
-					orderBy: { createdAt: 'desc' },
+					orderBy: { createdAt: 'asc' },
 					take: 1
 				}
 			}

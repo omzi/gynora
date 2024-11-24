@@ -4,7 +4,7 @@ const manifest = (): MetadataRoute.Manifest => {
 	return {
 		name: 'Gynora',
 		short_name: 'Gynora',
-		description: '✨ Your personal health pal, powered by AI',
+		description: '⚡ Your AI-powered mental health companion, powered by AI',
 		start_url: '/',
 		display: 'standalone',
 		background_color: '#5e17eb',

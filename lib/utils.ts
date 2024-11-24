@@ -697,23 +697,35 @@ export const parseSubtitle = (subtitleText: string) => {
   let text = '';
 
   for (const line of lines) {
-    // Skip WEBVTT header
+    // Skip WEBVTT header or empty lines
     if (line.startsWith('WEBVTT') || line.trim() === '') continue;
 
-    const timeMatch = line.match(/(\d{2}):(\d{2}):(\d{2})\.(\d{3}) --> (\d{2}):(\d{2}):(\d{2})\.(\d{3})/);
+    // Check for timestamp lines and handle both formats
+    const timeMatch = line.match(/(\d{2}):(\d{2})(?::(\d{2}))?\.(\d{3}) --> (\d{2}):(\d{2})(?::(\d{2}))?\.(\d{3})/);
+    
     if (timeMatch) {
       if (text) {
         entries.push({ start, end, text: text.trim() });
-        text = '';
+        text = '';  // Reset text for next subtitle
       }
-      start = convertToSeconds(timeMatch[1], timeMatch[2], timeMatch[3], timeMatch[4]);
-      end = convertToSeconds(timeMatch[5], timeMatch[6], timeMatch[7], timeMatch[8]);
+
+      // Convert timestamps based on the match
+      if (timeMatch[3] && timeMatch[6]) {
+        // Old format: HH:MM:SS.MS --> HH:MM:SS.MS
+        start = convertToSecondsOldFormat(timeMatch[1], timeMatch[2], timeMatch[3], timeMatch[4]);
+        end = convertToSecondsOldFormat(timeMatch[5], timeMatch[6], timeMatch[7], timeMatch[8]);
+      } else {
+        // New format: MM:SS.MS --> MM:SS.MS
+        start = convertToSecondsNewFormat(timeMatch[1], timeMatch[2], timeMatch[4]);
+        end = convertToSecondsNewFormat(timeMatch[5], timeMatch[6], timeMatch[8]);
+      }
     } else if (line.trim()) {
-      text += line + ' '; // Add text lines
+      // Accumulate subtitle text
+      text += line + ' ';
     }
   }
 
-  // Add the last entry if there is text left
+  // Add the last entry if there's text left
   if (text) {
     entries.push({ start, end, text: text.trim() });
   }
@@ -721,8 +733,16 @@ export const parseSubtitle = (subtitleText: string) => {
   return entries;
 };
 
-export const convertToSeconds = (hours: string, minutes: string, seconds: string, milliseconds: string) => {
-  return parseInt(hours) * 3600 + parseInt(minutes) * 60 + parseInt(seconds) + parseInt(milliseconds) / 1000;
+// Helper function for converting the new format (MM:SS.MS --> MM:SS.MS) to seconds
+export const convertToSecondsNewFormat = (minutes: string, seconds: string, milliseconds: string): number => {
+  const totalSeconds = parseInt(minutes) * 60 + parseFloat(`${seconds}.${milliseconds}`);
+  return totalSeconds;
+};
+
+// Helper function for converting the old format (HH:MM:SS.MS --> HH:MM:SS.MS) to seconds
+export const convertToSecondsOldFormat = (hours: string, minutes: string, seconds: string, milliseconds: string): number => {
+  const totalSeconds = parseInt(hours) * 3600 + parseInt(minutes) * 60 + parseFloat(`${seconds}.${milliseconds}`);
+  return totalSeconds;
 };
 
 export const formatTime = (time: number) => {
