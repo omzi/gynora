@@ -16,10 +16,11 @@ export const GET = async (req: NextRequest) => {
 				name: true,
 				updatedAt: true,
 				messages: {
-					orderBy: { createdAt: 'asc' },
+					orderBy: { createdAt: 'desc' },
 					take: 1
 				}
-			}
+			},
+			orderBy: { createdAt: 'desc' }
 		});
 
 		// Format the response data

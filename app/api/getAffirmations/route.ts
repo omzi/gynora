@@ -17,7 +17,8 @@ export const GET = async (req: NextRequest) => {
 				content: true,
 				tone: true,
 				createdAt: true
-			}
+			},
+			orderBy: { createdAt: 'desc' }
 		});
 
 		// Format the response data

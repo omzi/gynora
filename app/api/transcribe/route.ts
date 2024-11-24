@@ -18,7 +18,7 @@ export const POST = async (req: NextRequest) => {
     const audioFile = await blobToFile(formData.get('audio') as Blob, 'audio.mp3');
     const transcript = await assemblyAIClient.transcripts.transcribe({
       audio: audioFile,
-      language_code: 'en',
+      language_code: 'en'
     });
 
     return NextResponse.json({ transcription: transcript.text }, { status: 200 });
