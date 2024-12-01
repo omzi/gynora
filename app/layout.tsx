@@ -50,6 +50,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
             />
           </Providers>
           <Analytics />
+          <script src='https://firefeed.omzi.dev/widget.js' firefeed-id='a2a2bbf8-fa9a-48ae-a3fe-ab4e8ec2e3e0' defer />
         </body>
       </html>
     </QueryClientProvider>
